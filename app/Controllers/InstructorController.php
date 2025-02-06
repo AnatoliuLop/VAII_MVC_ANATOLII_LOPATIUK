@@ -10,12 +10,14 @@ class InstructorController
         return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
     }
 
+    // Zobrazenie zoznamu inštruktorov
     public function index()
     {
         $instructors = Instructor::getAll();
         require __DIR__ . '/../Views/pages/instructors.view.php';
     }
 
+    // Zobrazenie formulára na pridanie inštruktora
     public function create()
     {
         if (!$this->isAdmin()) {
@@ -25,6 +27,7 @@ class InstructorController
         require __DIR__ . '/../Views/pages/instructor_create.view.php';
     }
 
+    // Uloženie nového inštruktora
     public function store()
     {
         if (!$this->isAdmin()) {
@@ -86,6 +89,7 @@ class InstructorController
         }
     }
 
+    // Zobrazenie formulára na úpravu inštruktora
     public function edit()
     {
         if (!$this->isAdmin()) {
@@ -108,6 +112,7 @@ class InstructorController
         require __DIR__ . '/../Views/pages/instructor_edit.view.php';
     }
 
+    // Uloženie úprav inštruktora
     public function update()
     {
         if (!$this->isAdmin()) {
@@ -172,6 +177,7 @@ class InstructorController
         }
     }
 
+    // Odstránenie inštruktora
     public function delete()
     {
         if (!$this->isAdmin()) {

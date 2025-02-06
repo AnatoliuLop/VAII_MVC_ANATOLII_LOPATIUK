@@ -6,6 +6,7 @@ use PDO;
 
 class Course
 {
+    // Získa všetky kurzy spolu s menami inštruktorov
     public static function getAllWithInstructors(): array
     {
         $pdo = Database::getInstance();
@@ -16,6 +17,7 @@ class Course
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Získa zoznam všetkých inštruktorov
     public static function getInstructorsList(): array
     {
         $pdo = Database::getInstance();
@@ -23,6 +25,7 @@ class Course
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Nájde konkrétny kurz podľa ID
     public static function find($id): ?array
     {
         $pdo = Database::getInstance();
@@ -36,6 +39,7 @@ class Course
         return $course ?: null;
     }
 
+    // Vytvorí nový kurz
     public static function create(array $data): bool
     {
         $pdo = Database::getInstance();
@@ -45,6 +49,7 @@ class Course
         return $stmt->execute($data);
     }
 
+    // Aktualizuje existujúci kurz
     public static function update($id, array $data): bool
     {
         $pdo = Database::getInstance();
@@ -56,6 +61,7 @@ class Course
         return $stmt->execute(array_merge(['id' => $id], $data));
     }
 
+    // Odstráni kurz podľa ID
     public static function delete($id): bool
     {
         $pdo = Database::getInstance();

@@ -1,15 +1,18 @@
 <?php require __DIR__ . '/../layouts/header.view.php'; ?>
-
+    <link rel="stylesheet" href="/assets/css/cars.css">
     <main class="auta-content">
-        <div>
-            <!-- Кнопка на создание -->
+         <div class="auta-header">
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                <a href="?url=car/create" class="btn btn-primary" style="float: right; margin: 10px;">Pridať auto</a>
+                <a href="?url=car/create" class="btn btn-primary add-car-btn">Pridať auto</a>
             <?php endif; ?>
-            <h2 class="stranka-title">Naše Auta</h2>
+            <h2 class="auta-title">Naše Auta</h2>
+            <p class="auta-subtitle">
+                Objavte naše moderné a bezpečné vozidlá, ktoré používame na výučbu jazdy.
+                Všetky autá sú pravidelne servisované a prispôsobené na výcvik vodičov. 🚗🔧
+            </p>
         </div>
 
-        <!-- Пример AJAX поиска (доп. фишка) -->
+
         <div class="search-block">
             <input type="text" id="searchCars" placeholder="Hľadať podľa značky alebo modelu...">
             <button id="searchBtn" class="btn btn-secondary">Hľadať</button>
@@ -33,7 +36,7 @@
         </div>
     </main>
 
-    <script src="assets/js/ajax_search.js"></script> <!-- Подключаем скрипт AJAX поиска -->
+    <script src="assets/js/ajax_search.js"></script>
 
 
 <?php require __DIR__ . '/../layouts/footer.view.php'; ?>

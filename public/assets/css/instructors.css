@@ -1,233 +1,140 @@
-/* Основные стили */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ============================= */
+/* ===== Štýly pre inštruktorov ===== */
+/* ============================= */
+
+/* Kontajner celej stránky */
+.instructors-content {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+/* Nadpis "Naši inštruktori" */
+.instructors-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
 }
 
-/* Контейнер инструкторов */
+/* Podnadpis (doplnkový text pod nadpisom) */
+.instructors-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+/* Tlačidlo "Pridať inštruktora" */
+.add-instructor-btn {
+    display: block;
+    width: max-content;
+    margin: 0 auto 20px;
+    font-size: 1rem;
+}
+
+/* Kontajner pre všetky karty inštruktorov */
 .instructors-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
-    padding: 20px;
     justify-content: center;
 }
 
-/* Карточка инструктора */
+/* Karta inštruktora */
 .instructor-card {
-    background: #fff;
+    background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    overflow: hidden;
-    transition: transform 0.2s ease-in-out;
-    padding: 10px;
+    padding: 20px;
+    width: 300px;
     text-align: center;
-    position: relative;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
 }
 
+/* Efekt zväčšenia pri prejdení kurzorom */
 .instructor-card:hover {
     transform: translateY(-5px);
 }
 
-/* Фото инструктора */
-.instructor-photo {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 8px 8px 0 0;
-    position: relative;
-    transition: filter 0.3s;
-}
-.photo-container:hover .instructor-photo {
-    filter: brightness(50%);
-}
-.instructor-photo:hover {
-    filter: brightness(90%);
-}
-
-/* Наведение для показа информации */
-.hover-info {
-    display: none;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 10px;
-    font-size: 0.9rem;
-    text-align: center;
-    border-radius: 0 0 8px 8px;
-}
-
-.instructor-card:hover .hover-info {
-    display: block;
-}
-
-/* Информация об инструкторе */
-.instructor-card h3 {
+/* Meno inštruktora */
+.instructor-name {
     font-size: 1.5rem;
-    margin: 10px 0;
-}
-
-.instructor-card p {
-    font-size: 1rem;
-    color: #555;
-    padding: 0 10px;
-    flex-grow: 1;
-}
-
-/* Специальные карточки с большим акцентом */
-.highlight-card {
-    grid-column: span 2;
-    background-color: #e9f7ef;
-    color: #145a32;
-}
-
-.highlight-card h3 {
-    font-size: 1.8rem;
-}
-
-.highlight-card p {
     font-weight: bold;
-    font-size: 1.1rem;
+    margin-bottom: 10px;
 }
 
-/* Адаптивность */
-@media (max-width: 1200px) {
-    .instructors-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .instructors-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 480px) {
-    .instructors-container {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Кнопки для администраторов */
-.admin-btns {
-    display: flex;
-    justify-content: space-around;
-    margin: 10px 0;
-}
-
-.admin-btns .btn {
-    flex: 1;
-    margin: 0 5px;
-}
-
-/* Фоновая информация */
+/* Informácie o inštruktorovi */
 .instructor-info {
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 0 0 8px 8px;
-}
-
-/* Заголовок страницы */
-.stranka-title {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-/* Успешные сообщения */
-.success-message {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-/* Ошибочные сообщения */
-.error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-/* Кнопка добавления инструктора */
-.add-instructor-btn {
-    display: block;
-    background-color: #007bff;
-    color: white;
-    text-align: center;
-    padding: 10px 20px;
-    margin: 0 auto 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background 0.3s;
-}
-
-.add-instructor-btn:hover {
-    background-color: #0056b3;
-}
-
-/* Текст при наведении на фото */
-.instructor-photo .hover-info {
-    display: none;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 8px;
-    font-size: 0.9rem;
-    text-align: center;
-    border-radius: 0 0 8px 8px;
-    transition: opacity 0.3s ease-in-out;
-    opacity: 0;
-}
-
-.hover-info {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-weight: bold;
-    font-size: 1.2rem;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    text-align: center;
-    padding: 10px;
-}
-
-/* Новые стили для текста о стаже */
-.instructor-experience {
-    font-weight: bold;
-    color: #ffeb3b;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
     font-size: 1rem;
-    padding: 5px;
+    margin-bottom: 5px;
+    color: #555;
 }
 
-.photo-container:hover .hover-info {
-    opacity: 1;
-}
+/* Fotografia inštruktora (fixná veľkosť) */
 .photo-container {
     position: relative;
     overflow: hidden;
+    border-radius: 8px;
+    margin-top: 15px;
+    width: 100%;
+    height: 280px; /* Fixná výška fotografie */
+}
+
+.instructor-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Zabezpečuje jednotnú veľkosť fotografie */
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Overlay s informáciami o praxi */
+.hover-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    font-size: 1rem;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Zobrazenie overlayu pri prejdení kurzorom */
+.photo-container:hover .hover-info {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Ovládacie tlačidlá pre administrátora */
+.admin-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.admin-buttons .btn {
+    width: 48%;
+    font-size: 0.9rem;
+}
+
+/* ============================= */
+/* ====== Responzívny dizajn ===== */
+/* ============================= */
+
+@media (max-width: 768px) {
+    .instructors-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .instructor-card {
+        width: 90%;
+    }
 }

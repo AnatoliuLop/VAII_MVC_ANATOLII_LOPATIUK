@@ -4,17 +4,17 @@ RUN apt-get update && docker-php-ext-install mysqli pdo pdo_mysql
 
 
 
-# Устанавливаем нужные расширения, включаем rewrite и т.п.
+#  Inštalujeme potrebné rozšírenia, povoľujeme rewrite atď.
 RUN docker-php-ext-install pdo pdo_mysql
 RUN a2enmod rewrite
 
-# Меняем DocumentRoot, если нужно
+# Meníme DocumentRoot
 RUN sed -i 's#/var/www/html#/var/www/html/public#' /etc/apache2/sites-available/000-default.conf
 
-# Копируем файлы проекта
+# Kopírujeme súbory projektu
 COPY . /var/www/html
 
-# Допустим, хотим дать права на все файлы под www-data
+# Predpokladajme, že chceme udeliť práva na všetky súbory pod www-data
 RUN chown -R www-data:www-data /var/www/html/public/uploads
 RUN chmod -R 777 /var/www/html/public/uploads
 RUN chmod -R g+s /var/www/html/public/uploads

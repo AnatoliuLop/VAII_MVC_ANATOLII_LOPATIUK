@@ -3,35 +3,21 @@
 <main class="styled-form">
     <h2>Prihlásenie</h2>
 
-    <?php if (isset($_GET['error'])): ?>
-        <div class="alert alert-danger">
-            <?php
-            $error = $_GET['error'];
-            switch ($error) {
-                case 'invalid_credentials':
-                    echo "Nesprávne meno alebo heslo!";
-                    break;
-                case 'empty_fields':
-                    echo "Vyplňte všetky požadované polia.";
-                    break;
-                default:
-                    echo "Neznáma chyba pri prihlasovaní!";
-            }
-            ?>
-        </div>
-    <?php endif; ?>
+    <div id="login-error" class="alert alert-danger" style="display: none;"></div>
 
-    <form action="?url=user/loginProcess" method="POST">
+    <form id="loginForm">
         <label>Meno (username):</label>
-        <input type="text" name="username" required>
+        <input type="text" name="username" id="username" required>
 
         <label>Heslo (password):</label>
-        <input type="password" name="password" required>
+        <input type="password" name="password" id="password" required>
 
         <button type="submit">Prihlásiť</button>
     </form>
 
     <p>Nemáte ešte účet? <a href="?url=user/register">Zaregistrujte sa</a></p>
 </main>
+
+<script src="/assets/js/login.js"></script>
 
 <?php require __DIR__ . '/../layouts/footer.view.php'; ?>

@@ -1,22 +1,21 @@
-/* Стили для футера */
-/* Основной стиль футера для полной ширины и фиксации внизу */
+/* Štýly pre pätičku */
+/* Hlavný štýl pätičky pre plnú šírku a fixovanie dole */
 .footer-section {
-
+    background-color: #333; /* Farba pozadia, rovnaká ako v hlavičke */
+    color: white; /* Zachováme biely text */
     width: 100%;
-    padding: 20px 0;        /* Отступы сверху и снизу */
-    text-align: center;      /* Центрирование текста */
-    margin-top: auto;        /* Размещает футер внизу, если контента мало */
-    clear: both;             /* Предотвращает наложение на предыдущие элементы */
+    padding: 20px 0;        /* Odsadenie hore a dole */
+    text-align: center;      /* Zarovnanie textu do stredu */
+    margin-top: auto;        /* Posunutie pätičky dole, ak je málo obsahu */
+    clear: both;             /* Zabráni prekrývaniu s predchádzajúcimi prvkami */
 }
 
-
-/* Для обеспечения корректного отображения на мобильных устройствах */
+/* Zabezpečenie správneho zobrazenia na mobilných zariadeniach */
 @media (max-width: 768px) {
     .footer-section {
-        position: static; /* Для мобильных устройств футер не фиксируется */
+        position: static; /* Na mobilných zariadeniach nebude pätička fixovaná */
     }
 }
-
 
 .footer-heading {
     letter-spacing: 2px;
@@ -104,6 +103,9 @@
     padding: 20px 0;
 }
 
+/* Sociálne siete */
+/*Button Social*/
+/* From Uiverse.io by david-mohseni */
 .footer-social {
     display: inline-flex;
     list-style: none;
@@ -136,6 +138,7 @@
     transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
+/* Tooltip pre sociálne ikony */
 .footer-social .tooltip {
     position: absolute;
     top: 0;
@@ -169,33 +172,7 @@
     pointer-events: auto;
 }
 
-.footer-social .facebook:hover,
-.footer-social .facebook:hover .tooltip,
-.footer-social .facebook:hover .tooltip::before {
-    background: #1877f2;
-    color: #fff;
-}
-
-.footer-social .twitter:hover,
-.footer-social .twitter:hover .tooltip,
-.footer-social .twitter:hover .tooltip::before {
-    background: #1da1f2;
-    color: #fff;
-}
-
-.footer-social .instagram:hover,
-.footer-social .instagram:hover .tooltip,
-.footer-social .instagram:hover .tooltip::before {
-    background: #e4405f;
-    color: #fff;
-}
-
-td {
-    background-color: #252323;
-
-}
-
-/* Стили кнопок в футере */
+/* Štýly pre tlačidlá v pätičke */
 .button {
     display: inline-block;
     font-family: "Montserrat", "Trebuchet MS", Helvetica, sans-serif;
@@ -238,6 +215,7 @@ td {
     min-width: 15em;
 }
 
+/* Tlačidlo pre telefón */
 .phone {
     background: #139675;
 }
@@ -255,6 +233,7 @@ td {
     content: "\F095";
 }
 
+/* Tlačidlo pre e-mail */
 .email {
     background: #C673B3;
 }
@@ -272,6 +251,7 @@ td {
     content: "\F0E0";
 }
 
+/* Responzívne úpravy */
 @media (max-width: 768px) {
     .footer-top .footer_info_block {
         flex-direction: column;

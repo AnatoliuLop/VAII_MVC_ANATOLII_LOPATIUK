@@ -6,6 +6,7 @@ use PDO;
 
 class Car
 {
+    // Získa všetky autá
     public static function getAll(): array
     {
         $pdo = Database::getInstance();
@@ -13,6 +14,7 @@ class Car
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Nájde auto podľa ID
     public static function find($id): ?array
     {
         $pdo = Database::getInstance();
@@ -22,6 +24,7 @@ class Car
         return $car ?: null;
     }
 
+    // Vytvorí nové auto
     public static function create(array $data): bool
     {
         $pdo = Database::getInstance();
@@ -38,6 +41,7 @@ class Car
         ]);
     }
 
+    // Aktualizuje existujúce auto
     public static function update($id, array $data): bool
     {
         $pdo = Database::getInstance();
@@ -57,10 +61,21 @@ class Car
         ]);
     }
 
+    // Odstráni auto podľa ID
     public static function delete($id): bool
     {
         $pdo = Database::getInstance();
         $stmt = $pdo->prepare("DELETE FROM cars WHERE id = :id");
         return $stmt->execute(['id' => $id]);
+    }
+
+    // Vyhľadá autá podľa značky
+    public static function searchByBrand(string $brand): array
+    {
+        $pdo = Database::getInstance();
+        $sql = "SELECT * FROM cars WHERE brand LIKE :brand";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['brand' => "%$brand%"]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

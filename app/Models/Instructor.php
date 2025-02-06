@@ -6,6 +6,7 @@ use PDO;
 
 class Instructor
 {
+    // Získa všetkých inštruktorov
     public static function getAll(): array
     {
         $pdo = Database::getInstance();
@@ -13,6 +14,7 @@ class Instructor
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Nájde inštruktora podľa ID
     public static function find($id): ?array
     {
         $pdo = Database::getInstance();
@@ -22,22 +24,24 @@ class Instructor
         return $instructor ?: null;
     }
 
+    // Vytvorí nového inštruktora
     public static function create(array $data): bool
     {
         $pdo = Database::getInstance();
-        $sql = "INSERT INTO instructors (name, email, phone, specialization, photo_path,experience_years)
+        $sql = "INSERT INTO instructors (name, email, phone, specialization, photo_path, experience_years)
                 VALUES (:name, :email, :phone, :specialization, :photo_path, :experience_years)";
         $stmt = $pdo->prepare($sql);
         return $stmt->execute([
-            'name'          => $data['name'],
-            'email'         => $data['email'],
-            'phone'         => $data['phone'],
-            'specialization'=> $data['specialization'],
-            'photo_path'    => $data['photo_path'],
-            'experience_years' =>$data['experience_years'] ?? 0
+            'name'           => $data['name'],
+            'email'          => $data['email'],
+            'phone'          => $data['phone'],
+            'specialization' => $data['specialization'],
+            'photo_path'     => $data['photo_path'],
+            'experience_years' => $data['experience_years'] ?? 0
         ]);
     }
 
+    // Aktualizuje údaje inštruktora
     public static function update($id, array $data): bool
     {
         $pdo = Database::getInstance();
@@ -57,6 +61,7 @@ class Instructor
         ]);
     }
 
+    // Odstráni inštruktora podľa ID
     public static function delete($id): bool
     {
         $pdo = Database::getInstance();

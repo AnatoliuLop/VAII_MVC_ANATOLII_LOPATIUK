@@ -22,7 +22,7 @@ class CourseController
             header('Location: ?url=forbidden');
             exit;
         }
-        $instructors = Course::getInstructorsList(); // Загружаем всех инструкторов
+        $instructors = Course::getInstructorsList();
 
         require __DIR__ . '/../Views/pages/course_create.view.php';
     }
@@ -42,14 +42,14 @@ class CourseController
             $fullDescription = trim($_POST['full_description'] ?? '');
             $duration = (int)($_POST['duration'] ?? 0);
             $price = (float)($_POST['price'] ?? 0);
-            $instructor_id = isset($_POST['instructor_id']) ? (int)$_POST['instructor_id'] : null; // ✅ Исправлено
+            $instructor_id = isset($_POST['instructor_id']) ? (int)$_POST['instructor_id'] : null;
 
             if (empty($title)) $errors[] = "Názov kurzu je povinný!";
             if (empty($description)) $errors[] = "Krátky popis je povinný!";
             if (empty($fullDescription)) $errors[] = "Celý popis kurzu je povinný!";
             if ($duration <= 0) $errors[] = "Trvanie musí byť viac ako 0 dní!";
             if ($price < 0) $errors[] = "Cena nemôže byť záporná!";
-            if (!$instructor_id || $instructor_id <= 0) $errors[] = "Musíte vybrať inštruktora!"; // ✅ Добавлена проверка
+            if (!$instructor_id || $instructor_id <= 0) $errors[] = "Musíte vybrať inštruktora!";
 
             if (!empty($errors)) {
                 $_SESSION['errors'] = $errors;
@@ -82,7 +82,7 @@ class CourseController
                 'duration' => $duration,
                 'price' => $price,
                 'photo_path' => htmlspecialchars($photoPath),
-                'instructor_id' => $instructor_id // ✅ Теперь instructor_id передаётся корректно
+                'instructor_id' => $instructor_id
             ]);
 
             $_SESSION['success'] = "Kurz bol úspešne pridaný!";
@@ -98,7 +98,7 @@ class CourseController
             header('Location: ?url=forbidden');
             exit;
         }
-        $instructors = Course::getInstructorsList(); // Загружаем всех инструкторов
+        $instructors = Course::getInstructorsList();
 
         $id = (int)($_GET['id'] ?? 0);
         if (!$id) {
@@ -133,7 +133,7 @@ class CourseController
             $existingPhoto = $_POST['existing_photo'] ?? '';
             $instructor_id = (int)($_POST['instructor_id'] ?? 1);
 
-            // ✅ Проверка, существует ли выбранный инструктор
+
             $instructors = array_column(Course::getInstructorsList(), 'id');
             if (!in_array($instructor_id, $instructors)) {
                 $errors[] = "Vybraný inštruktor neexistuje!";
@@ -203,6 +203,7 @@ class CourseController
 
     public function details()
     {
+        // Overenie, či bolo zadané ID kurzu
         if (!isset($_GET['id'])) {
             echo json_encode(['error' => 'Chýbajúce ID kurzu']);
             exit;
@@ -211,13 +212,14 @@ class CourseController
         $id = (int) $_GET['id'];
         $course = Course::find($id);
 
+        // Kontrola, či kurz existuje
         if (!$course) {
             echo json_encode(['error' => 'Kurz neexistuje']);
             exit;
         }
 
+        // Vrátenie údajov o kurze vo formáte JSON
         header('Content-Type: application/json');
         echo json_encode($course);
     }
-
 }

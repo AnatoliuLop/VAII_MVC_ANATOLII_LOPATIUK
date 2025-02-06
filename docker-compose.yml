@@ -5,9 +5,9 @@ services:
     build: .
     container_name: autoskola_app
     ports:
-      - "8080:80"         # Мапим порт 80 контейнера на порт 8080 хоста
+      - "8080:80"         # Mapujeme port 80 kontajnera na port 8080 hostiteľa
     volumes:
-      - ./:/var/www/html  # Прямо примонтируем наш проект (если хотим live-редактирование)
+      - ./:/var/www/html  # Priamo pripojíme náš projekt (ak chceme live úpravy)
       - ./public/uploads:/var/www/html/public/uploads
     depends_on:
       - db
@@ -19,8 +19,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: autoschool
-      # MYSQL_USER: autoschool_user
-      # MYSQL_PASSWORD: 123
+
     ports:
       - "3307:3306"
     volumes:

@@ -7,6 +7,10 @@
                 <a href="?url=instructor/create" class="btn btn-primary add-instructor-btn">Pridať inštruktora</a>
             <?php endif; ?>
             <h2 class="instructors-title">Naši inštruktori</h2>
+            <p class="instructors-subtitle">
+                Naši skúsení inštruktori vám pomôžu zvládnuť pravidlá cestnej premávky, získate istotu za volantom a budete pripravení na skúšky.
+                S nami je výučba efektívna a bezpečná! 🚗💨
+            </p>
         </div>
 
         <div class="instructors-container">

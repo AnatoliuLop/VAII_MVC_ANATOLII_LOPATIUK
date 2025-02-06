@@ -1,11 +1,15 @@
 <?php require __DIR__ . '/../layouts/header.view.php'; ?>
-
+<link rel="stylesheet" href="/assets/css/courses.css">
 <main class="courses-content">
-    <div>
-        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-            <a href="?url=course/create" class="btn btn-primary" style="float: right; margin: 10px;">Pridať kurz</a>
-        <?php endif; ?>
-        <h2 class="stranka-title">Naše Kurzy</h2>
+    <div class="courses-header">
+    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+        <a href="?url=course/create" class="btn btn-primary add-course-btn">Pridať kurz</a>
+    <?php endif; ?>
+    <h2 class="courses-title">Naše Kurzy</h2>
+    <p class="courses-subtitle">
+        Vyberte si z našej širokej ponuky kurzov pre rôzne kategórie vodičských oprávnení.
+        Naši skúsení inštruktori vám pomôžu stať sa sebavedomým a bezpečným vodičom. 🚗🏍️
+    </p>
     </div>
 
     <div class="courses-container">
@@ -48,7 +52,7 @@
         <?php endforeach; ?>
     </div>
 
-    <!-- Модальное окно с полным описанием курса -->
+
     <div id="courseModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>

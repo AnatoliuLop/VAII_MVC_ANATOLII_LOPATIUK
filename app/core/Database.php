@@ -20,7 +20,7 @@ class Database
                 self::$instance = new PDO("mysql:host=$host;dbname=$db_name;charset=utf8", $username, $password);
                 self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
-                die("Ошибка подключения к БД: " . $e->getMessage());
+                die("Chyba pri pripájaní k databáze: " . $e->getMessage());
             }
         }
         return self::$instance;

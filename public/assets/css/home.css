@@ -1,0 +1,118 @@
+/* Všeobecné štýly */
+.home-content {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+/* Nadpis */
+.hero h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: black;
+}
+
+.hero h1 span {
+    color: #007bff;
+}
+
+.hero-description {
+    font-size: 1.2rem;
+    color: black;
+    margin-bottom: 20px;
+}
+
+/* Výhody autoškoly */
+.benefits {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.benefit {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    width: 250px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.benefit img {
+    width: 80px;
+    height: auto;
+    margin: auto;
+}
+
+.benefit h3 {
+    font-size: 1.4rem;
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+.benefit p {
+    font-size: 1rem;
+    color: #333;
+}
+
+.benefit:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Interaktívna štatistika */
+.statistics {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.stat-item {
+    background: #343a40;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 200px;
+    text-align: center;
+    font-size: 1.5rem;
+    transition: transform 0.3s;
+}
+
+.stat-item:hover {
+    transform: scale(1.1);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+/* Bežiaci text */
+.news-ticker {
+    background: #007bff;
+    color: white;
+    padding: 10px 0;
+    overflow: hidden;
+    margin-top: 40px;
+    white-space: nowrap;
+    position: relative;
+}
+
+.ticker-content {
+    display: inline-block;
+    white-space: nowrap;
+    animation: ticker 10s linear infinite;
+}
+
+@keyframes ticker {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}

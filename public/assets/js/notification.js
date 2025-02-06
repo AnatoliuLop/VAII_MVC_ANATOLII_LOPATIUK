@@ -13,7 +13,7 @@ class Notification {
     }
 }
 
-// Автоматически показываем ошибки или успех из PHP-сессии
+
 document.addEventListener("DOMContentLoaded", function () {
     const errors = JSON.parse(document.body.dataset.errors || "[]");
     const success = document.body.dataset.success || "";

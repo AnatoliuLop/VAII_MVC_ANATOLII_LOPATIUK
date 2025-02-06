@@ -1,0 +1,109 @@
+=========================================
+🔹 Návod na inštaláciu a spustenie projektu (Docker + PHPStorm 2024) 🔹
+=========================================
+
+📌 1. Stiahnutie projektu z GitHubu
+-----------------------------------------
+1. Otvorte terminál alebo príkazový riadok.
+2. Skopírujte repozitár:
+   git clone <URL_REPO>
+3. Prejdite do priečinka projektu:
+   cd <NAZOV_PROJEKTU>
+
+📌 2. Spustenie Docker kontajnera
+-----------------------------------------
+1. Uistite sa, že máte nainštalovaný **Docker** a **Docker Compose**.
+2. Spustite kontajner príkazom:
+   docker-compose up -d
+
+📌 3. Vytvorenie databázy a tabuliek manuálne
+-----------------------------------------
+Keďže v projekte **nie sú migrácie**, databázu a tabuľky je potrebné vytvoriť manuálne.
+
+🔹 3.1 Pripojenie k MySQL v Docker kontajneri
+-----------------------------------------
+Ak MySQL beží v Dockeri, pripojte sa cez terminál:
+   docker exec -it <mysql_container_name> mysql -u root -p
+
+Alebo otvorte **phpMyAdmin** na `http://localhost:8080` a prihláste sa s údajmi:
+- **Host**: localhost
+- **Používateľ**: root
+- **Heslo**: 12345
+
+🔹 3.2 Vytvorenie databázy
+-----------------------------------------
+V MySQL konzole spustite:
+   CREATE DATABASE autoschool CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+   USE autoschool;
+
+🔹 3.3 Vytvorenie tabuliek
+-----------------------------------------
+➤ **Tabuľka `users`**
+   CREATE TABLE users (
+       id INT NOT NULL AUTO_INCREMENT,
+       username VARCHAR(100) NOT NULL UNIQUE,
+       password VARCHAR(255) NOT NULL,
+       role VARCHAR(50) NOT NULL DEFAULT 'user',
+       PRIMARY KEY (id)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+➤ **Tabuľka `instructors`**
+   CREATE TABLE instructors (
+       id INT NOT NULL AUTO_INCREMENT,
+       name VARCHAR(100) NOT NULL,
+       email VARCHAR(100) DEFAULT NULL,
+       phone VARCHAR(50) DEFAULT NULL,
+       specialization VARCHAR(100) DEFAULT NULL,
+       photo_path VARCHAR(255) DEFAULT NULL,
+       experience_years INT DEFAULT 0,
+       PRIMARY KEY (id)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+➤ **Tabuľka `courses`**
+   CREATE TABLE courses (
+       id INT NOT NULL AUTO_INCREMENT,
+       title VARCHAR(100) DEFAULT NULL,
+       description TEXT,
+       duration INT DEFAULT NULL,
+       price DECIMAL(10,2) DEFAULT NULL,
+       photo_path VARCHAR(255) DEFAULT NULL,
+       full_description TEXT NOT NULL,
+       PRIMARY KEY (id)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+ALTER TABLE courses ADD CONSTRAINT fk_courses_instructor FOREIGN KEY (instructor_id) REFERENCES instructors(id) ON DELETE CASCADE;
+
+➤ **Tabuľka `cars`**
+   CREATE TABLE cars (
+       id INT NOT NULL AUTO_INCREMENT,
+       brand VARCHAR(100) NOT NULL,
+       model VARCHAR(100) NOT NULL,
+       fuel_type VARCHAR(50) DEFAULT NULL,
+       year INT DEFAULT NULL,
+       license_plate VARCHAR(20) UNIQUE NOT NULL,
+       photo_path VARCHAR(255) DEFAULT NULL,
+       PRIMARY KEY (id)
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+📌 4. Nastavenie PHPStorm 2024
+-----------------------------------------
+1. Otvorte **PHPStorm**.
+2. Načítajte projekt: **File → Open → Vyberte priečinok projektu**.
+3. Skontrolujte nastavenia PHP:
+   - **File → Settings → PHP** → Nastavte interpreter z Dockeru.
+4. Skontrolujte pripojenie k databáze:
+   - **Database → Add Data Source → MySQL**.
+   - **Host**: localhost, **User**: root, **Password**: root, **Database**: autoschool.
+
+📌 5. Spustenie projektu
+-----------------------------------------
+1. Otvorte terminál v PHPStorm.
+2. Spustite server príkazom:
+   docker-compose up -d
+3. Webová aplikácia bude dostupná na: **http://localhost:8080/?url=home/index**.
+
+📌 6. Zastavenie projektu
+-----------------------------------------
+Ak chcete zastaviť Docker kontajnery, použite príkaz:
+   docker-compose down
+
+✅ **Hotovo! Váš projekt je pripravený na použitie.** 🚀

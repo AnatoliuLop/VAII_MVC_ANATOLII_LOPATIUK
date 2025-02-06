@@ -7,11 +7,11 @@ use PHPMailer\PHPMailer\Exception;
 
 class EnrollController
 {
-    // Страница формы заявки
+    // Stránka formulára prihlásenia na kurz
     public function form()
     {
         $courseId = $_GET['course_id'] ?? null;
-        $course = Course::find($courseId); // Получаем данные о курсе
+        $course = Course::find($courseId); // Načítanie údajov o kurze
 
         if (!$course) {
             http_response_code(404);
@@ -22,7 +22,7 @@ class EnrollController
         require __DIR__ . '/../Views/pages/enroll_form.view.php';
     }
 
-    // Обработка заявки
+    // Spracovanie prihlásenia na kurz
     public function enroll()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -46,7 +46,8 @@ class EnrollController
                 header("Location: ?url=enroll/form&course_id=$courseId");
                 exit;
             }
-            // 📋 Получаем данные о курсе
+
+            //  Načítanie údajov o kurze
             $course = Course::find($courseId);
             if (!$course) {
                 $_SESSION['errors'][] = "Kurz nebol nájdený.";
@@ -58,12 +59,13 @@ class EnrollController
                 'Kategória A' => "Budete sa učiť jazdiť na motocykloch s obsahom do 125 cm³. Získate zručnosti pre bezpečnú jazdu v meste aj na diaľnici.",
                 'Kategória B' => "Kurz zahŕňa výučbu jazdy na osobných automobiloch, vrátane parkovania, diaľničnej jazdy a riešenia krizových situácií.",
                 'Kategória C' => "Tento kurz Vás pripraví na riadenie nákladných vozidiel vrátane manipulácie s veľkými nákladmi a bezpečnej jazdy na dlhé vzdialenosti.",
-                'Kategória A+B' => "Ziskate Zlavy!.",
-
+                'Kategória A+B' => "Získate zľavy!",
             ];
-// Используем шаблон для выбранного курса или стандартный текст
+
+            // Použitie šablóny pre vybraný kurz alebo štandardný text
             $courseTemplate = $templates[$course['title']] ?? "Tento kurz Vám poskytne základné zručnosti a znalosti potrebné pre úspešné zvládnutie skúšky.";
-            // Отправка email
+
+            // Odoslanie e-mailu
             $mail = new PHPMailer(true);
             try {
                 $mail->isSMTP();
@@ -74,7 +76,7 @@ class EnrollController
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
-                $mail->CharSet = 'UTF-8'; // 🗝️ ВАЖЛИВО: додаємо для правильного кодування
+                $mail->CharSet = 'UTF-8'; // 🗝️ Dôležité pre správne kódovanie
 
                 $mail->setFrom($email, 'Záujemca o kurz');
                 $mail->addAddress('tvoj_email@gmail.com');
@@ -85,7 +87,7 @@ class EnrollController
                 $mail->send();
                 $_SESSION['success'] = "Vaša žiadosť bola úspešne odoslaná!";
 
-                // 📤 Автоматический ответ пользователю
+                //  Automatická odpoveď používateľovi
                 $autoReply = new PHPMailer(true);
                 $autoReply->isSMTP();
                 $autoReply->Host = 'smtp.gmail.com';

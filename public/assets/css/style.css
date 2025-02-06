@@ -1,3 +1,6 @@
+/* ========================= */
+/* 🔹 Globálne štýly 🔹 */
+/* ========================= */
 
 * {
     margin: 0;
@@ -5,13 +8,15 @@
     box-sizing: border-box;
 }
 
-/* Основные стили */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
 }
 
-/* Header */
+/* ========================= */
+/* 🔹 HLAVIČKA 🔹 */
+/* ========================= */
+
 header {
     background-color: #333;
     color: white;
@@ -21,6 +26,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
 }
 
 .header-container {
@@ -29,25 +35,32 @@ header {
     justify-content: space-between;
     width: 100%;
 }
+
+/* Logo */
 .logo {
     width: 90px;
     height: 90px;
-    overflow: hidden;     /* Скрывает лишние части изображения */
+    overflow: hidden;
     border-radius: 20%;
-
 }
+
 .logo img {
     width: 100%;
     height: 100%;
-    object-fit: fill;     /* Растягивание изображения */
+    object-fit: fill;
     margin-right: 15px;
-
 }
 
+/* Nadpis */
 header h1 {
     font-size: 1.4rem;
     margin: 0;
     text-transform: uppercase;
+}
+
+/* Desktopová navigácia (predvolená) */
+.desktop-nav {
+    display: flex;
 }
 
 .nav-links {
@@ -56,7 +69,7 @@ header h1 {
 }
 
 .nav-links li {
-    margin: 0 10px;
+    margin: 0 15px;
 }
 
 .nav-links li a {
@@ -72,402 +85,159 @@ header h1 {
     border-radius: 4px;
 }
 
-/* Блок пользователя (кнопка login/логин) */
-.user-block {
-    margin-right: 15px;
+/* ========================= */
+/* 🔹 BURGER MENU 🔹 */
+/* ========================= */
+
+/* Ikona burger menu (predvolene skrytá na PC) */
+.burger-menu {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: white;
+    padding: 10px;
 }
 
-.login-btn {
-    margin-right: 15px;
-}
-
-/* Mobile responsive header */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-    }
-    .nav-links {
-        margin-top: 10px;
-    }
-    header h1 {
-        font-size: 1.2rem;
-    }
-}
-
-/* Footer */
-.footer-section {
-    background-color: #484848;
-    padding: 20px;
-    color: #fff;
-}
-
-.footer-top {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-.child_footer_info_block {
-    margin: 15px;
+/* Mobilná navigácia (predvolene skrytá) */
+.mobile-nav {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: #333;
     text-align: center;
 }
 
-.footer-section h4 {
-    margin-bottom: 10px;
+.mobile-nav-links {
+    list-style: none;
+    padding: 0;
+}
+
+.mobile-nav-links li {
+    padding: 15px;
+    border-bottom: 1px solid #555;
+}
+
+.mobile-nav-links li a {
+    color: white;
+    text-decoration: none;
     font-size: 1.2rem;
 }
 
-.footer-social {
-    display: inline-flex;
-    list-style: none;
-    gap: 15px;
+.mobile-nav-links li a:hover {
+    background-color: #575757;
 }
 
-/* Carousel */
-.carousel-item {
-    height: 70vh;
-    background-size: cover;
-    background-position: center;
+/* ========================= */
+/* 🔹 RESPONSIVITA 🔹 */
+/* ========================= */
+
+@media (max-width: 768px) {
+    /* Skryjeme desktopovú navigáciu */
+    .desktop-nav {
+        display: none;
+    }
+
+    /* Zobrazíme burger menu */
+    .burger-menu {
+        display: block;
+    }
+
+    /* Zmenšíme logo a nadpis */
+    .logo {
+        width: 60px;
+        height: 60px;
+    }
+
+    header h1 {
+        font-size: 1rem;
+    }
 }
 
-/* Главные заголовки на страницах */
-.stranka-title {
-    font-size: 1.8rem;
-    margin: 20px 0;
-    text-align: center;
-}
 
-/* Стили форм */
+/* ============================== */
+/* 🔹 EDIT UPDATE 🔹 */
+/* ============================== */
+
+
+
 .styled-form {
     max-width: 600px;
-    margin: 20px auto;
+    margin: 40px auto;
     background-color: #fff;
-    border: 1px solid #ddd;
     border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
 
 .styled-form h2 {
-    margin-bottom: 15px;
     text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+    color: #333;
 }
 
 .styled-form label {
-    margin: 8px 0 4px;
     display: block;
     font-weight: bold;
+    margin: 10px 0 5px;
+    color: #555;
 }
 
 .styled-form input,
 .styled-form select,
 .styled-form textarea {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
-    border-radius: 4px;
+    padding: 10px;
     border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 1rem;
 }
+
+.styled-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.styled-form input[type="file"] {
+    border: none;
+    background: #f8f8f8;
+    padding: 5px;
+}
+
 
 .styled-form button {
     display: inline-block;
-    padding: 10px 20px;
+    width: 100%;
     background-color: #28a745;
-    color: #fff;
-    cursor: pointer;
+    color: white;
+    padding: 12px;
     border: none;
-    border-radius: 4px;
-    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s;
 }
 
 .styled-form button:hover {
     background-color: #218838;
 }
 
-/* Карточки авто */
-.auta-content {
-    padding: 20px;
-}
 
-.search-block {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.auta-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
-
-.car-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    width: 280px;
-    padding: 15px;
-    text-align: center;
-    transition: transform 0.2s;
-}
-
-.car-card:hover {
-    transform: scale(1.02);
-}
-
-.car-photo {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-
-/* Кнопки внутри карточки */
-.car-card .btn {
-    width: 45%;
-    margin: 5px 2.5%;
-}
-
-/* Адаптив */
-@media (max-width: 768px) {
-    .car-card {
-        width: 90%;
-        margin: 0 auto 20px;
-    }
-}
-
-/* Пример небольших анимаций */
-.btn-warning:hover {
-    background-color: #e0a800 !important;
-}
-
-.btn-danger:hover {
-    background-color: #c82333 !important;
-}
-
-.notification-box {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 15px;
-    border-radius: 5px;
-    z-index: 1000;
-    color: #fff;
-    font-size: 16px;
-    background-color: #5cb85c;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    transition: opacity 0.3s, transform 0.3s;
-}
-
-.notification-box.error {
-    background-color: #d9534f;
-}
-
-.fade-out {
-    opacity: 0;
-    transform: translateY(-20px);
-}
-
-
-/* Стили для модального окна */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background: #fff;
-    padding: 20px;
-    width: 50%;
-    max-width: 600px;
-    text-align: center;
-    border-radius: 10px;
-    position: relative;
-}
-
-.close {
-    position: absolute;
-    right: 20px;
-    top: 10px;
-    font-size: 25px;
-    cursor: pointer;
-}
-.styled-form {
-    max-width: 500px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.styled-form h2 {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.styled-form label {
-    display: block;
-    margin: 10px 0 5px;
-}
-
-.styled-form input,
-.styled-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-}
-
-.styled-form button {
-    width: 100%;
+.styled-form .btn-primary {
     background-color: #007bff;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
-.styled-form button:hover {
+.styled-form .btn-primary:hover {
     background-color: #0056b3;
 }
 
 
-/* Контейнер курсов */
-.courses-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    padding: 20px;
-    justify-content: center;
-}
-
-/* Карточка курса */
-.course-card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 620px; /* Фиксированная высота карточки */
-    overflow: hidden;
-    transition: transform 0.2s ease-in-out;
-    padding: 10px;
-}
-
-.course-card:hover {
-    transform: translateY(-5px);
-}
-
-/* Фото курса */
-.course-photo {
-    width: 100%;
-    height: 320px; /* Фиксированная высота изображения */
-    object-fit: cover; /* Сохраняем пропорции и обрезаем лишнее */
-    border-radius: 8px 8px 0 0;
-}
-
-/* Информация о курсе */
-.course-card h3 {
-    font-size: 1.5rem;
-    margin: 10px 0;
-    text-align: center;
-}
-
-.course-card p {
-    font-size: 1rem;
-    color: #555;
-    padding: 0 10px;
-    flex-grow: 1;
-    text-align: center;
-}
-
-/* Цена */
-.course-card strong {
-    font-weight: bold;
-    color: #333;
-}
-
- /*Кнопки */
-.button_Courses {
-    background: #007bff;
-    color: white;
-    padding: 10px;
-    margin: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-    text-align: center;
-}
-
-.btn_prihlasitSa{
-    background: #5cb85c;
-}
-
-.course-card .btn:hover {
-    background: #0056b3;
-}
-
-/*.btn-info {*/
-/*    background: #17a2b8;*/
-/*}*/
-
-/*.btn-info:hover {*/
-/*    background: #138496;*/
-/*}*/
-
-/*.btn-warning {*/
-/*    background: #ffc107;*/
-/*}*/
-
-/*.btn-warning:hover {*/
-/*    background: #e0a800;*/
-/*}*/
-
-/*.btn-danger {*/
-/*    background: #dc3545;*/
-/*}*/
-
-/*.btn-danger:hover {*/
-/*    background: #c82333;*/
-/*}*/
-
-/* Кнопки размещены внизу */
-/*.course-card .btn-container {*/
-/*    margin-top: auto;*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    gap: 5px;*/
-/*}*/
-
-/* Фиксирование одинаковой высоты для всех карточек */
-.course-card-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-}
-
-/* Адаптивность */
 @media (max-width: 768px) {
-    .course-card {
-        height: auto;
-    }
-    .course-photo {
-        height: 180px;
+    .styled-form {
+        width: 90%;
     }
 }
 

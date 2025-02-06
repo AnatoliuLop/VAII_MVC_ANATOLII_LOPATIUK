@@ -1,51 +1,70 @@
-<?php require __DIR__ . '/../../views/layouts/header.view.php'; ?>
+<?php require __DIR__ . '/../layouts/header.view.php'; ?>
 
-<main class="p-3 m-0 border-0 bd-example m-0 border-0">
-    <div id="carouselExampleCaptions" class="carousel slide">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" class="active" aria-current="true" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+
+<link rel="stylesheet" href="/assets/css/home.css">
+
+<main class="home-content">
+
+    <section class="hero">
+        <h1>Vitajte v <span>Autoškole PRO</span></h1>
+        <p class="hero-description">Moderná autoškola v Žiline s profesionálnymi inštruktormi a najnovšími výcvikovými metódami.</p>
+    </section>
+
+
+    <section class="benefits">
+        <div class="benefit">
+            <img src="/assets/icons/new-car.png" alt="Moderné vozidlá">
+            <h3>Moderné vozidlá</h3>
+            <p>Najnovšie autá v našom vozovom parku.</p>
         </div>
-        <div class="carousel-inner">
-            <div class="carousel-item" style="background-image: url('assets/images/photo_of_team.jpg');">
-                <svg class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="800" height="400">
-                    <rect width="100%" height="100%" fill="none"></rect>
-                </svg>
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Náš Tím</h5>
-                    <p>Náš tím profesionálnych inštruktorov...</p>
-                </div>
-            </div>
-            <div class="carousel-item active" style="background-image: url('assets/images/car_images_home_page.jpg');">
-                <svg class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="800" height="400">
-                    <rect width="100%" height="100%" fill="none"></rect>
-                </svg>
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Naše autá</h5>
-                    <p>Naša autoškola ponúka moderné a bezpečné vozidlá...</p>
-                </div>
-            </div>
-            <div class="carousel-item" style="background-image: url('assets/images/aula_home_page.jpg');">
-                <svg class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="800" height="400">
-                    <rect width="100%" height="100%" fill="none"></rect>
-                </svg>
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Naša učebňa</h5>
-                    <p>Naša moderná učebňa je vybavená najnovšími technológiami...</p>
-                </div>
-            </div>
+        <div class="benefit">
+            <img src="/assets/icons/road.png" alt="Praktické jazdy">
+            <h3>Praktické jazdy</h3>
+            <p>Reálne situácie v premávke na najnovších trasách.</p>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
+        <div class="benefit">
+            <img src="/assets/icons/salary.png" alt="Dostupné ceny">
+            <h3>Dostupné ceny</h3>
+            <p>Najlepšie ceny v Žiline so študentskými zľavami.</p>
+        </div>
+        <div class="benefit">
+            <img src="/assets/icons/coaching.png" alt="Individuálny prístup">
+            <h3>Individuálny prístup</h3>
+            <p>Každý študent dostáva osobné školenie od skúsených inštruktorov.</p>
+        </div>
+    </section>
+
+
+
+    <section class="statistics">
+        <div class="stat-item">
+            <h2><span class="stat-number" data-target="425">0</span>+</h2>
+            <p>Úspešne vyškolení študenti</p>
+        </div>
+        <div class="stat-item">
+            <h2><span class="stat-number" data-target="35000">0</span>+</h2>
+            <p>Hodiny výcviku na cestách</p>
+        </div>
+        <div class="stat-item">
+            <h2><span class="stat-number" data-target="98">0</span>%</h2>
+            <p>Úspešnosť na skúškach</p>
+        </div>
+        <div class="stat-item">
+            <h2><span class="stat-number" data-target="5">0</span></h2>
+            <p>Dostupné vozidlá</p>
+        </div>
+    </section>
+
+
+    <section class="news-ticker">
+        <div class="ticker-content">
+            <span>📢 Nová skupina vodičov začne 15. marca!</span>
+            <span>🚗 Zľava na kurz pre študentov do konca mesiaca!</span>
+            <span>🛠️ Pripravujeme nové vozidlá na praktické jazdy!</span>
+        </div>
+    </section>
 </main>
 
+<script src="/assets/js/home.js"></script>
 
-<?php require __DIR__ . '/../../views/layouts/footer.view.php'; ?>
+<?php require __DIR__ . '/../layouts/footer.view.php'; ?>

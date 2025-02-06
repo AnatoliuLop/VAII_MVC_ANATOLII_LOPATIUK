@@ -9,7 +9,7 @@
         <label for="description">Krátky popis:</label>
         <textarea id="description" name="description" required></textarea>
 
-        <!-- ✅ Новое поле для полного описания -->
+
         <label for="full_description">Celý popis kurzu:</label>
         <textarea id="full_description" name="full_description" rows="6" required></textarea>
 

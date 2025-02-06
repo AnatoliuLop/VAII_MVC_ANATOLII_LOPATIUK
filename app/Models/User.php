@@ -7,7 +7,7 @@ use PDOException;
 
 class User
 {
-    // Поиск пользователя по имени
+    // Nájde používateľa podľa mena
     public static function findByUsername(string $username): ?array
     {
         try {
@@ -18,20 +18,20 @@ class User
 
             return $user ?: null;
         } catch (PDOException $e) {
-            error_log("DB Error in findByUsername: " . $e->getMessage());
+            error_log("Chyba DB v findByUsername: " . $e->getMessage());
             return null;
         }
     }
 
-    // Создание нового пользователя
+    // Vytvorenie nového používateľa
     public static function create(string $username, string $password, string $role = 'user'): bool
     {
         try {
             $pdo = Database::getInstance();
 
-            // Проверка на дублирование (дополнительная защита на уровне БД)
+            // Kontrola duplicity (dodatočná ochrana na úrovni DB)
             if (self::findByUsername($username)) {
-                return false; // Пользователь уже существует
+                return false; // Používateľ už existuje
             }
 
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -45,7 +45,7 @@ class User
                 ':role'     => $role
             ]);
         } catch (PDOException $e) {
-            error_log("DB Error in create: " . $e->getMessage());
+            error_log("Chyba DB v create: " . $e->getMessage());
             return false;
         }
     }

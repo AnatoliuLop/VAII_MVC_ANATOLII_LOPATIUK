@@ -188,4 +188,22 @@ class CarController
         }
         header('Location: ?url=car/index');
     }
+    public function search()
+    {
+        header('Content-Type: application/json');
+
+        $query = trim($_GET['q'] ?? '');
+
+        if (empty($query)) {
+            echo json_encode([]);
+            exit;
+        }
+
+        // Выполняем поиск только по марке
+        $cars = Car::searchByBrand($query);
+        echo json_encode($cars);
+        exit;
+    }
+
+
 }

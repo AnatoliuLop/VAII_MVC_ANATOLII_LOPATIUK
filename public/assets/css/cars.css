@@ -1,0 +1,140 @@
+/* ============================= */
+/* ===== Štýly pre stránku áut ===== */
+/* ============================= */
+
+/* Hlavný kontajner */
+.auta-content {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Nadpis stránky */
+.auta-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Podnadpis s popisom */
+.auta-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+/* Tlačidlo na pridanie auta */
+.add-car-btn {
+    display: block;
+    width: max-content;
+    margin: 0 auto 20px;
+    font-size: 1rem;
+}
+
+/* Filter (vyhľadávanie) */
+.search-block {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-block input {
+    width: 50%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-block button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-block button:hover {
+    background-color: #0056b3;
+}
+
+/* Kontajner automobilov */
+.auta-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Karta auta */
+.car-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Efekt zväčšenia pri prejdení kurzorom */
+.car-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Fotografia auta */
+.car-photo {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Názov automobilu */
+.car-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Informácie o aute */
+.car-info {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+/* Tlačidlá pre administrátora */
+.admin-btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.admin-btns .btn {
+    width: 48%;
+    font-size: 0.9rem;
+}
+
+/* ============================= */
+/* ====== Responzívny dizajn ===== */
+/* ============================= */
+
+@media (max-width: 768px) {
+    .auta-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .car-card {
+        width: 90%;
+    }
+
+    .search-block input {
+        width: 80%;
+    }
+}
