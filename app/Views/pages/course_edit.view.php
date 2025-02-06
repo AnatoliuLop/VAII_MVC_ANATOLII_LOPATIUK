@@ -19,6 +19,16 @@
         <label for="duration">Trvanie (dni):</label>
         <input type="number" id="duration" name="duration" value="<?= htmlspecialchars($course['duration']) ?>" required>
 
+        <label for="instructor_id">Vedúci inštruktor:</label>
+        <select id="instructor_id" name="instructor_id" required>
+            <option value="">-- Vyberte inštruktora --</option> <!-- Значение по умолчанию -->
+            <?php foreach ($instructors as $instructor): ?>
+                <option value="<?= $instructor['id'] ?>" <?= ($instructor['id'] == $course['instructor_id']) ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($instructor['name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+
         <label for="price">Cena (€):</label>
         <input type="number" id="price" name="price" value="<?= htmlspecialchars($course['price']) ?>" required>
 

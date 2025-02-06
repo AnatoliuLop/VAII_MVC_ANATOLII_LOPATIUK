@@ -1,0 +1,280 @@
+/* Стили для футера */
+/* Основной стиль футера для полной ширины и фиксации внизу */
+.footer-section {
+
+    width: 100%;
+    padding: 20px 0;        /* Отступы сверху и снизу */
+    text-align: center;      /* Центрирование текста */
+    margin-top: auto;        /* Размещает футер внизу, если контента мало */
+    clear: both;             /* Предотвращает наложение на предыдущие элементы */
+}
+
+
+/* Для обеспечения корректного отображения на мобильных устройствах */
+@media (max-width: 768px) {
+    .footer-section {
+        position: static; /* Для мобильных устройств футер не фиксируется */
+    }
+}
+
+
+.footer-heading {
+    letter-spacing: 2px;
+    color: #818963;
+}
+
+.footer-link {
+    color: #4f4f4f;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    color: #333;
+}
+
+.footer-table {
+    color: gray;
+    width: 100%;
+    margin: 20px;
+    border-color: #c82333;
+}
+
+.footer-table td {
+    padding: 5px 0;
+    border: none;
+    color: #fff;
+}
+
+.footer-table td:first-child {
+    font-weight: 600;
+}
+
+.footer-table i {
+    margin-right: 10px;
+}
+
+.copyright-section {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #4f4f4f;
+}
+
+.child_footer_info_block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*background-color: #ff0000;*/
+}
+
+.footer-section h3, .footer-section h4 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+    color: #ed1b24;
+}
+
+.footer-top .footer_info_block {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-bottom {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 20px 0;
+}
+
+.footer-social {
+    display: inline-flex;
+    list-style: none;
+    height: 160px;
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-social li {
+    display: inline;
+    margin-right: 16px;
+}
+
+.footer-social .icon {
+    position: relative;
+    background: #0056c8;
+    border-radius: 50%;
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.footer-social .tooltip {
+    position: absolute;
+    top: 0;
+    font-size: 14px;
+    background: #fff;
+    color: #fff;
+    padding: 5px 8px;
+    border-radius: 5px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.footer-social .tooltip::before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    background: blue;
+    bottom: -3px;
+    left: 50%;
+    transform: translate(-50%) rotate(45deg);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.footer-social .icon:hover .tooltip {
+    top: -45px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.footer-social .facebook:hover,
+.footer-social .facebook:hover .tooltip,
+.footer-social .facebook:hover .tooltip::before {
+    background: #1877f2;
+    color: #fff;
+}
+
+.footer-social .twitter:hover,
+.footer-social .twitter:hover .tooltip,
+.footer-social .twitter:hover .tooltip::before {
+    background: #1da1f2;
+    color: #fff;
+}
+
+.footer-social .instagram:hover,
+.footer-social .instagram:hover .tooltip,
+.footer-social .instagram:hover .tooltip::before {
+    background: #e4405f;
+    color: #fff;
+}
+
+td {
+    background-color: #252323;
+
+}
+
+/* Стили кнопок в футере */
+.button {
+    display: inline-block;
+    font-family: "Montserrat", "Trebuchet MS", Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    padding: 0.8em 4.7em 0.8em 1.4em;
+    background: #009ED8;
+    border: none;
+    color: white;
+    transition: 0.2s;
+}
+.button:before,
+.button:after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    padding-top: inherit;
+    padding-bottom: inherit;
+    width: 2.8em;
+    content: "\00a0";
+    font-family: 'FontAwesome', sans-serif;
+    font-size: 1.2em;
+    text-align: center;
+    transition: 0.2s;
+    transform-origin: 50% 60%;
+}
+.button:before {
+    background: rgba(0, 0, 0, 0.1);
+}
+.button:hover {
+    background: #0079a5;
+}
+.button:active,
+.button:focus {
+    background: #002e3f;
+    outline: none;
+}
+.button {
+    min-width: 15em;
+}
+
+.phone {
+    background: #139675;
+}
+
+.phone:hover {
+    background: #0d6952;
+}
+
+.phone:active,
+.phone:focus {
+    background: #083b2e;
+}
+
+.phone:after {
+    content: "\F095";
+}
+
+.email {
+    background: #C673B3;
+}
+
+.email:hover {
+    background: #b74f9f;
+}
+
+.email:active,
+.email:focus {
+    background: #963d82;
+}
+
+.email:after {
+    content: "\F0E0";
+}
+
+@media (max-width: 768px) {
+    .footer-top .footer_info_block {
+        flex-direction: column;
+        align-items: center;
+    }
+}

@@ -4,7 +4,21 @@
     <h2>Prihlásenie</h2>
 
     <?php if (isset($_GET['error'])): ?>
-        <div class="alert alert-danger">Nesprávne meno alebo heslo!</div>
+        <div class="alert alert-danger">
+            <?php
+            $error = $_GET['error'];
+            switch ($error) {
+                case 'invalid_credentials':
+                    echo "Nesprávne meno alebo heslo!";
+                    break;
+                case 'empty_fields':
+                    echo "Vyplňte všetky požadované polia.";
+                    break;
+                default:
+                    echo "Neznáma chyba pri prihlasovaní!";
+            }
+            ?>
+        </div>
     <?php endif; ?>
 
     <form action="?url=user/loginProcess" method="POST">
@@ -16,10 +30,8 @@
 
         <button type="submit">Prihlásiť</button>
     </form>
+
     <p>Nemáte ešte účet? <a href="?url=user/register">Zaregistrujte sa</a></p>
-<!--    --><?php
-    echo password_hash('123', PASSWORD_DEFAULT);
-//    ?>
 </main>
 
 <?php require __DIR__ . '/../layouts/footer.view.php'; ?>

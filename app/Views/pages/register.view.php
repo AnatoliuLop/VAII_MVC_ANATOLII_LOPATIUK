@@ -4,21 +4,38 @@
     <h2>Registrácia nového používateľa</h2>
 
     <?php if (isset($_GET['error'])): ?>
-        <?php if ($_GET['error'] === 'empty'): ?>
-            <div class="alert alert-danger">Musíte vyplniť všetky polia.</div>
-        <?php elseif ($_GET['error'] === 'exists'): ?>
-            <div class="alert alert-danger">Tento užívateľ už existuje!</div>
-        <?php elseif ($_GET['error'] === 'db'): ?>
-            <div class="alert alert-danger">Chyba databázy pri registrácii!</div>
-        <?php endif; ?>
+        <div class="alert alert-danger">
+            <?php
+            $error = $_GET['error'];
+            switch ($error) {
+                case 'empty':
+                    echo "Musíte vyplniť všetky polia.";
+                    break;
+                case 'exists':
+                    echo "Tento užívateľ už existuje!";
+                    break;
+                case 'db':
+                    echo "Chyba databázy pri registrácii!";
+                    break;
+                case 'short_username':
+                    echo "Používateľské meno musí mať aspoň 3 znaky.";
+                    break;
+                case 'weak_password':
+                    echo "Heslo musí mať aspoň 6 znakov a obsahovať číslo.";
+                    break;
+                default:
+                    echo "Neznáma chyba!";
+            }
+            ?>
+        </div>
     <?php endif; ?>
 
     <form action="?url=user/registerProcess" method="POST">
         <label for="username">Používateľské meno:</label>
-        <input type="text" name="username" id="username" required>
+        <input type="text" name="username" id="username" required minlength="3">
 
         <label for="password">Heslo:</label>
-        <input type="password" name="password" id="password" required>
+        <input type="password" name="password" id="password" required minlength="6">
 
         <button type="submit">Registrovať</button>
     </form>

@@ -13,6 +13,16 @@
         <label for="full_description">Celý popis kurzu:</label>
         <textarea id="full_description" name="full_description" rows="6" required></textarea>
 
+        <label for="instructor_id">Vedúci inštruktor:</label>
+        <select id="instructor_id" name="instructor_id" required>
+            <option value="">-- Vyberte inštruktora --</option> <!-- Значение по умолчанию -->
+            <?php foreach ($instructors as $instructor): ?>
+                <option value="<?= $instructor['id'] ?>">
+                    <?= htmlspecialchars($instructor['name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+
         <label for="duration">Dĺžka (hodiny):</label>
         <input type="number" id="duration" name="duration" required>
 

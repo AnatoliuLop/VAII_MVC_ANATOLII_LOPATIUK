@@ -5,6 +5,11 @@ use App\Models\Instructor;
 
 class InstructorController
 {
+    private function isAdmin()
+    {
+        return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+    }
+
     public function index()
     {
         $instructors = Instructor::getAll();
@@ -13,23 +18,30 @@ class InstructorController
 
     public function create()
     {
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
         require __DIR__ . '/../Views/pages/instructor_create.view.php';
     }
 
     public function store()
     {
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
-            $name = trim($_POST['name'] ?? '');
-            $email = trim($_POST['email'] ?? '');
-            $phone = trim($_POST['phone'] ?? '');
-            $specialization = trim($_POST['specialization'] ?? '');
+            $name = htmlspecialchars(trim($_POST['name'] ?? ''));
+            $email = filter_var(trim($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL);
+            $phone = htmlspecialchars(trim($_POST['phone'] ?? ''));
+            $specialization = htmlspecialchars(trim($_POST['specialization'] ?? ''));
+            $experience_years = (int)($_POST['experience_years'] ?? 0);
 
-            // Валидация полей
             if (empty($name)) $errors[] = "Meno inštruktora je povinné!";
-            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors[] = "Neplatná emailová adresa!";
-            }
+            if (!$email) $errors[] = "Neplatná emailová adresa!";
             if (empty($phone) || !preg_match('/^\+?\d{10,15}$/', $phone)) {
                 $errors[] = "Neplatné telefónne číslo!";
             }
@@ -44,6 +56,14 @@ class InstructorController
                 if ($_FILES['photo']['size'] > 2 * 1024 * 1024) {
                     $errors[] = "Súbor je príliš veľký! Maximálna veľkosť je 2MB.";
                 }
+
+                if (empty($errors)) {
+                    $photoDir = 'uploads/instructors/';
+                    if (!is_dir($photoDir)) mkdir($photoDir, 0777, true);
+                    $filename = basename($_FILES['photo']['name']);
+                    $photoPath = $photoDir . $filename;
+                    move_uploaded_file($_FILES['photo']['tmp_name'], $photoPath);
+                }
             }
 
             if (!empty($errors)) {
@@ -52,30 +72,13 @@ class InstructorController
                 exit;
             }
 
-            if (!empty($_FILES['photo']['tmp_name'])) {
-                $photoDir = '/var/www/html/public/uploads/instructors/';
-                if (!is_dir($photoDir) && !mkdir($photoDir, 0777, true)) {
-                    die('Chyba: nemožno vytvoriť adresár ' . $photoDir);
-                }
-                chmod($photoDir, 0777);
-                chown($photoDir, 'www-data');
-
-                $filename = basename($_FILES['photo']['name']);
-                $photoPath = 'uploads/instructors/' . $filename;
-                $targetFile = $photoDir . $filename;
-
-                if (!move_uploaded_file($_FILES['photo']['tmp_name'], $targetFile)) {
-                    die('Chyba: súbor sa nepodarilo presunúť do ' . $targetFile);
-                }
-                chmod($targetFile, 0644);
-            }
-
             Instructor::create([
                 'name' => $name,
                 'email' => $email,
                 'phone' => $phone,
                 'specialization' => $specialization,
-                'photo_path' => $photoPath
+                'photo_path' => htmlspecialchars($photoPath),
+                'experience_years' => $experience_years
             ]);
 
             $_SESSION['success'] = "Inštruktor bol úspešne pridaný!";
@@ -85,31 +88,46 @@ class InstructorController
 
     public function edit()
     {
-        $id = $_GET['id'] ?? null;
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
+
+        $id = (int)($_GET['id'] ?? 0);
         if (!$id) {
             header('Location: ?url=instructor/index');
             exit;
         }
+
         $instructor = Instructor::find($id);
+        if (!$instructor) {
+            header("HTTP/1.0 404 Not Found");
+            echo "Inštruktor s ID $id neexistuje!";
+            exit;
+        }
         require __DIR__ . '/../Views/pages/instructor_edit.view.php';
     }
 
     public function update()
     {
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
-            $id = $_POST['id'] ?? null;
-            $name = trim($_POST['name'] ?? '');
-            $email = trim($_POST['email'] ?? '');
-            $phone = trim($_POST['phone'] ?? '');
-            $specialization = trim($_POST['specialization'] ?? '');
+
+            $id = (int)($_POST['id'] ?? 0);
+            $name = htmlspecialchars(trim($_POST['name'] ?? ''));
+            $email = filter_var(trim($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL);
+            $phone = htmlspecialchars(trim($_POST['phone'] ?? ''));
+            $specialization = htmlspecialchars(trim($_POST['specialization'] ?? ''));
+            $experience_years = (int)($_POST['experience_years'] ?? 0);
             $existingPhoto = $_POST['existing_photo'] ?? '';
 
-            // Валидация полей
             if (empty($name)) $errors[] = "Meno inštruktora je povinné!";
-            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors[] = "Neplatná emailová adresa!";
-            }
+            if (!$email) $errors[] = "Neplatná emailová adresa!";
             if (empty($phone) || !preg_match('/^\+?\d{10,15}$/', $phone)) {
                 $errors[] = "Neplatné telefónne číslo!";
             }
@@ -124,30 +142,20 @@ class InstructorController
                 if ($_FILES['photo']['size'] > 2 * 1024 * 1024) {
                     $errors[] = "Súbor je príliš veľký! Maximálna veľkosť je 2MB.";
                 }
+
+                if (empty($errors)) {
+                    $photoDir = 'uploads/instructors/';
+                    if (!is_dir($photoDir)) mkdir($photoDir, 0777, true);
+                    $filename = basename($_FILES['photo']['name']);
+                    $photoPath = $photoDir . $filename;
+                    move_uploaded_file($_FILES['photo']['tmp_name'], $photoPath);
+                }
             }
 
             if (!empty($errors)) {
                 $_SESSION['errors'] = $errors;
-                header('Location: ?url=instructor/edit&id=' . $id);
+                header("Location: ?url=instructor/edit&id=$id");
                 exit;
-            }
-
-            if (!empty($_FILES['photo']['tmp_name'])) {
-                $photoDir = '/var/www/html/public/uploads/instructors/';
-                if (!is_dir($photoDir) && !mkdir($photoDir, 0777, true)) {
-                    die('Chyba: nemožno vytvoriť adresár ' . $photoDir);
-                }
-                chmod($photoDir, 0777);
-                chown($photoDir, 'www-data');
-
-                $filename = basename($_FILES['photo']['name']);
-                $photoPath = 'uploads/instructors/' . $filename;
-                $targetFile = $photoDir . $filename;
-
-                if (!move_uploaded_file($_FILES['photo']['tmp_name'], $targetFile)) {
-                    die('Chyba: súbor sa nepodarilo presunúť do ' . $targetFile);
-                }
-                chmod($targetFile, 0644);
             }
 
             Instructor::update($id, [
@@ -155,7 +163,8 @@ class InstructorController
                 'email' => $email,
                 'phone' => $phone,
                 'specialization' => $specialization,
-                'photo_path' => $photoPath
+                'experience_years' => $experience_years,
+                'photo_path' => htmlspecialchars($photoPath)
             ]);
 
             $_SESSION['success'] = "Inštruktor bol úspešne upravený!";
@@ -165,23 +174,19 @@ class InstructorController
 
     public function delete()
     {
-        $id = $_GET['id'] ?? null;
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
+
+        $id = (int)($_GET['id'] ?? 0);
         if ($id) {
             Instructor::delete($id);
+            $_SESSION['success'] = "Inštruktor bol úspešne vymazaný!";
+        } else {
+            $_SESSION['errors'][] = "ID inštruktora chýba!";
         }
-        $_SESSION['success'] = "Inštruktor bol úspešne vymazaný!";
         header('Location: ?url=instructor/index');
+        exit;
     }
 }
-
-// Включаем передачу ошибок и успехов в JavaScript
-if (!empty($_SESSION['errors']) || !empty($_SESSION['success'])):
-    $errorsJson = !empty($_SESSION['errors']) ? json_encode($_SESSION['errors']) : '[]';
-    $successMsg = $_SESSION['success'] ?? '';
-    unset($_SESSION['errors'], $_SESSION['success']);
-    ?>
-    <script>
-        document.body.dataset.errors = <?= $errorsJson ?>;
-        document.body.dataset.success = "<?= addslashes($successMsg) ?>";
-    </script>
-<?php endif; ?>

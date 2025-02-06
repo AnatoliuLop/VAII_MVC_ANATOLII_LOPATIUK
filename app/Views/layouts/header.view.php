@@ -9,24 +9,28 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Tailwind (по желанию) -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700' rel='stylesheet' type='text/css'>
     <!-- Наши стили -->
     <link rel="stylesheet" href="/assets/css/style.css">
-
+    <link rel="stylesheet" href="/assets/css/footer.css">
 
     <!-- Скрипты -->
 <!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
     <script src="/assets/js/ajax_search.js"></script>
     <script src="/assets/js/notification.js"></script>
     <script src="/assets/js/enroll.js"></script>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!--FOOTER-->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
 <header>
     <div class="header-container">
         <div class="logo">
-            <img src="assets/images/Logo.png" alt="Logo">
+            <img src="/assets/images/logo.jpg" alt="Logo">
         </div>
         <h1>Autoškola PRO</h1>
         <nav>

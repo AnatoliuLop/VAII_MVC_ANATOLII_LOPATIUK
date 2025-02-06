@@ -25,6 +25,13 @@
                     <?php endif; ?>
                 </p>
 
+                <p><strong>Vedúci inštruktor:</strong>
+                    <a href="?url=instructor/index">
+                        <?= htmlspecialchars($course['instructor_name'] ?? 'Neznámy') ?>
+                    </a>
+                </p>
+
+
                 <button class="button_Courses" onclick="showCourseDetails(<?= $course['id'] ?>)">Viac informácií</button>
                 <a href="?url=enroll/form&course_id=<?= $course['id'] ?>" class="button_Courses btn_prihlasitSa">Prihlásiť sa</a>
 

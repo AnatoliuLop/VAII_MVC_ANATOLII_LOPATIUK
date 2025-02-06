@@ -24,5 +24,10 @@ class HomeController
         // Здесь подключаешь view для Skúšky:
         require __DIR__ . '/../Views/pages/exams.view.php';
     }
+    public function forbidden()
+    {
+        http_response_code(403); // Устанавливаем код ошибки 403
+        require __DIR__ . '/../Views/pages/forbidden.view.php';
+    }
     // И т.д.
 }

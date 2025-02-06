@@ -5,71 +5,84 @@ use App\Models\Course;
 
 class CourseController
 {
+    private function isAdmin()
+    {
+        return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+    }
+
     public function index()
     {
-        $courses = Course::getAll();
+        $courses = Course::getAllWithInstructors();
         require __DIR__ . '/../Views/pages/courses.view.php';
     }
 
     public function create()
     {
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
+        $instructors = Course::getInstructorsList(); // Загружаем всех инструкторов
+
         require __DIR__ . '/../Views/pages/course_create.view.php';
     }
 
     public function store()
     {
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
 
-            // Читаем данные из POST-запроса
             $title = trim($_POST['title'] ?? '');
             $description = trim($_POST['description'] ?? '');
             $fullDescription = trim($_POST['full_description'] ?? '');
-            $duration = $_POST['duration'] ?? 0;
-            $price = $_POST['price'] ?? 0;
+            $duration = (int)($_POST['duration'] ?? 0);
+            $price = (float)($_POST['price'] ?? 0);
+            $instructor_id = isset($_POST['instructor_id']) ? (int)$_POST['instructor_id'] : null; // ✅ Исправлено
 
-            // Проверяем, что поля не пустые
             if (empty($title)) $errors[] = "Názov kurzu je povinný!";
             if (empty($description)) $errors[] = "Krátky popis je povinný!";
             if (empty($fullDescription)) $errors[] = "Celý popis kurzu je povinný!";
             if ($duration <= 0) $errors[] = "Trvanie musí byť viac ako 0 dní!";
             if ($price < 0) $errors[] = "Cena nemôže byť záporná!";
+            if (!$instructor_id || $instructor_id <= 0) $errors[] = "Musíte vybrať inštruktora!"; // ✅ Добавлена проверка
 
-            // Если есть ошибки, отправляем пользователя обратно
             if (!empty($errors)) {
                 $_SESSION['errors'] = $errors;
                 header('Location: ?url=course/create');
                 exit;
             }
 
-            // Обрабатываем фото
             $photoPath = '';
             if (!empty($_FILES['photo']['tmp_name'])) {
-                $photoDir = '/var/www/html/public/uploads/courses/';
-                if (!is_dir($photoDir) && !mkdir($photoDir, 0777, true)) {
-                    die('Chyba: nemožno vytvoriť adresár ' . $photoDir);
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                if (!in_array($_FILES['photo']['type'], $allowedTypes)) {
+                    $errors[] = "Povolené formáty obrázkov: JPEG, PNG, WebP.";
                 }
-                chmod($photoDir, 0777);
-                chown($photoDir, 'www-data');
+                if ($_FILES['photo']['size'] > 2 * 1024 * 1024) {
+                    $errors[] = "Súbor je príliš veľký! Maximálna veľkosť je 2MB.";
+                }
 
+                if (!is_dir('uploads/courses/')) {
+                    mkdir('uploads/courses/', 0777, true);
+                }
                 $filename = basename($_FILES['photo']['name']);
                 $photoPath = 'uploads/courses/' . $filename;
-                $targetFile = $photoDir . $filename;
-
-                if (!move_uploaded_file($_FILES['photo']['tmp_name'], $targetFile)) {
-                    die('Chyba: súbor sa nepodarilo presunúť do ' . $targetFile);
-                }
-                chmod($targetFile, 0644);
+                move_uploaded_file($_FILES['photo']['tmp_name'], $photoPath);
             }
 
-            // Записываем в базу
             Course::create([
                 'title' => $title,
                 'description' => $description,
                 'full_description' => $fullDescription,
                 'duration' => $duration,
                 'price' => $price,
-                'photo_path' => $photoPath
+                'photo_path' => htmlspecialchars($photoPath),
+                'instructor_id' => $instructor_id // ✅ Теперь instructor_id передаётся корректно
             ]);
 
             $_SESSION['success'] = "Kurz bol úspešne pridaný!";
@@ -80,34 +93,74 @@ class CourseController
 
     public function edit()
     {
-        $id = $_GET['id'] ?? null;
+
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
+        $instructors = Course::getInstructorsList(); // Загружаем всех инструкторов
+
+        $id = (int)($_GET['id'] ?? 0);
         if (!$id) {
             header('Location: ?url=course/index');
             exit;
         }
         $course = Course::find($id);
+        if (!$course) {
+            header("HTTP/1.0 404 Not Found");
+            echo "Kurz s ID $id neexistuje!";
+            exit;
+        }
         require __DIR__ . '/../Views/pages/course_edit.view.php';
     }
 
     public function update()
     {
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
 
-            $id = $_POST['id'] ?? null;
-            $title = trim($_POST['title'] ?? '');
-            $description = trim($_POST['description'] ?? '');
-            $fullDescription = trim($_POST['full_description'] ?? '');
-            $duration = $_POST['duration'] ?? 0;
-            $price = $_POST['price'] ?? 0;
+            $id = (int)($_POST['id'] ?? 0);
+            $title = htmlspecialchars(trim($_POST['title'] ?? ''));
+            $description = htmlspecialchars(trim($_POST['description'] ?? ''));
+            $fullDescription = htmlspecialchars(trim($_POST['full_description'] ?? ''));
+            $duration = (int)($_POST['duration'] ?? 0);
+            $price = (float)($_POST['price'] ?? 0);
             $existingPhoto = $_POST['existing_photo'] ?? '';
+            $instructor_id = (int)($_POST['instructor_id'] ?? 1);
 
-            // Проверяем поля
+            // ✅ Проверка, существует ли выбранный инструктор
+            $instructors = array_column(Course::getInstructorsList(), 'id');
+            if (!in_array($instructor_id, $instructors)) {
+                $errors[] = "Vybraný inštruktor neexistuje!";
+            }
             if (empty($title)) $errors[] = "Názov kurzu je povinný!";
             if (empty($description)) $errors[] = "Krátky popis je povinný!";
             if (empty($fullDescription)) $errors[] = "Celý popis kurzu je povinný!";
             if ($duration <= 0) $errors[] = "Trvanie musí byť viac ako 0 dní!";
             if ($price < 0) $errors[] = "Cena nemôže byť záporná!";
+
+            $photoPath = $existingPhoto;
+            if (!empty($_FILES['photo']['tmp_name'])) {
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                if (!in_array($_FILES['photo']['type'], $allowedTypes)) {
+                    $errors[] = "Povolené formáty obrázkov: JPEG, PNG, WebP.";
+                }
+                if ($_FILES['photo']['size'] > 2 * 1024 * 1024) {
+                    $errors[] = "Súbor je príliš veľký! Maximálna veľkosť je 2MB.";
+                }
+
+                if (!is_dir('uploads/courses/')) {
+                    mkdir('uploads/courses/', 0777, true);
+                }
+                $filename = basename($_FILES['photo']['name']);
+                $photoPath = 'uploads/courses/' . $filename;
+                move_uploaded_file($_FILES['photo']['tmp_name'], $photoPath);
+            }
 
             if (!empty($errors)) {
                 $_SESSION['errors'] = $errors;
@@ -115,34 +168,14 @@ class CourseController
                 exit;
             }
 
-            // Обрабатываем загрузку нового фото
-            $photoPath = $existingPhoto;
-            if (!empty($_FILES['photo']['tmp_name'])) {
-                $photoDir = '/var/www/html/public/uploads/courses/';
-                if (!is_dir($photoDir) && !mkdir($photoDir, 0777, true)) {
-                    die('Chyba: nemožno vytvoriť adresár ' . $photoDir);
-                }
-                chmod($photoDir, 0777);
-                chown($photoDir, 'www-data');
-
-                $filename = basename($_FILES['photo']['name']);
-                $photoPath = 'uploads/courses/' . $filename;
-                $targetFile = $photoDir . $filename;
-
-                if (!move_uploaded_file($_FILES['photo']['tmp_name'], $targetFile)) {
-                    die('Chyba: súbor sa nepodarilo presunúť do ' . $targetFile);
-                }
-                chmod($targetFile, 0644);
-            }
-
-            // Обновляем курс
             Course::update($id, [
                 'title' => $title,
                 'description' => $description,
                 'full_description' => $fullDescription,
                 'duration' => $duration,
                 'price' => $price,
-                'photo_path' => $photoPath
+                'photo_path' => htmlspecialchars($photoPath),
+                'instructor_id' => $instructor_id
             ]);
 
             $_SESSION['success'] = "Kurz bol úspešne upravený!";
@@ -150,51 +183,41 @@ class CourseController
         }
     }
 
-    public function details()
-    {
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
-            http_response_code(400);
-            echo json_encode(["error" => "Chýba ID kurzu"]);
-            return;
-        }
-
-        $course = Course::find($id);
-        if (!$course) {
-            http_response_code(404);
-            echo json_encode(["error" => "Kurz nebol nájdený"]);
-            return;
-        }
-
-        header('Content-Type: application/json');
-        echo json_encode([
-            'title' => $course['title'],
-            'full_description' => $course['full_description']
-        ]);
-    }
     public function delete()
     {
-        $id = $_GET['id'] ?? null;
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
+
+        $id = (int)($_GET['id'] ?? 0);
         if ($id) {
-            Course::delete($id);  // Удаление курса из базы данных
+            Course::delete($id);
             $_SESSION['success'] = "Kurz bol úspešne vymazaný!";
         } else {
             $_SESSION['errors'][] = "ID kurzu chýba!";
         }
-        header('Location: ?url=course/index');  // Перенаправление после удаления
+        header('Location: ?url=course/index');
         exit;
     }
 
-}
+    public function details()
+    {
+        if (!isset($_GET['id'])) {
+            echo json_encode(['error' => 'Chýbajúce ID kurzu']);
+            exit;
+        }
 
-// Включаем передачу ошибок и успехов в JavaScript
-if (!empty($_SESSION['errors']) || !empty($_SESSION['success'])):
-    $errorsJson = !empty($_SESSION['errors']) ? json_encode($_SESSION['errors']) : '[]';
-    $successMsg = $_SESSION['success'] ?? '';
-    unset($_SESSION['errors'], $_SESSION['success']);
-    ?>
-    <script>
-        document.body.dataset.errors = <?= $errorsJson ?>;
-        document.body.dataset.success = "<?= addslashes($successMsg) ?>";
-    </script>
-<?php endif; ?>
+        $id = (int) $_GET['id'];
+        $course = Course::find($id);
+
+        if (!$course) {
+            echo json_encode(['error' => 'Kurz neexistuje']);
+            exit;
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($course);
+    }
+
+}

@@ -5,6 +5,11 @@ use App\Models\Car;
 
 class CarController
 {
+    private function isAdmin()
+    {
+        return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+    }
+
     public function index()
     {
         $cars = Car::getAll();
@@ -13,11 +18,20 @@ class CarController
 
     public function create()
     {
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
         require __DIR__ . '/../Views/pages/car_create.view.php';
     }
 
     public function store()
     {
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             $brand = trim($_POST['brand'] ?? '');
@@ -52,30 +66,20 @@ class CarController
             }
 
             if (!empty($_FILES['photo']['tmp_name'])) {
-                $photoDir = '/var/www/html/public/uploads/cars/';
-                if (!is_dir($photoDir) && !mkdir($photoDir, 0777, true)) {
-                    die('Chyba: nemožno vytvoriť adresár ' . $photoDir);
-                }
-                chmod($photoDir, 0777);
-                chown($photoDir, 'www-data');
-
+                $photoDir = 'uploads/cars/';
+                if (!is_dir($photoDir)) mkdir($photoDir, 0777, true);
                 $filename = basename($_FILES['photo']['name']);
-                $photoPath = 'uploads/cars/' . $filename;
-                $targetFile = $photoDir . $filename;
-
-                if (!move_uploaded_file($_FILES['photo']['tmp_name'], $targetFile)) {
-                    die('Chyba: súbor sa nepodarilo presunúť do ' . $targetFile);
-                }
-                chmod($targetFile, 0644);
+                $photoPath = $photoDir . $filename;
+                move_uploaded_file($_FILES['photo']['tmp_name'], $photoPath);
             }
 
             Car::create([
-                'brand' => $brand,
-                'model' => $model,
-                'year' => $year,
-                'fuel_type' => $fuelType,
-                'license_plate' => $licensePlate,
-                'photo_path' => $photoPath
+                'brand' => htmlspecialchars($brand),
+                'model' => htmlspecialchars($model),
+                'year' => (int)$year,
+                'fuel_type' => htmlspecialchars($fuelType),
+                'license_plate' => htmlspecialchars($licensePlate),
+                'photo_path' => htmlspecialchars($photoPath)
             ]);
 
             $_SESSION['success'] = "Auto bolo úspešne pridané!";
@@ -85,7 +89,12 @@ class CarController
 
     public function edit()
     {
-        $id = $_GET['id'] ?? null;
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
+
+        $id = (int)($_GET['id'] ?? 0);
         if (!$id) {
             header('Location: ?url=car/index');
             exit;
@@ -103,9 +112,14 @@ class CarController
 
     public function update()
     {
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
-            $id = $_POST['id'] ?? null;
+            $id = (int)($_POST['id'] ?? 0);
             $brand = trim($_POST['brand'] ?? '');
             $model = trim($_POST['model'] ?? '');
             $year = $_POST['year'] ?? null;
@@ -139,30 +153,20 @@ class CarController
             }
 
             if (!empty($_FILES['photo']['tmp_name'])) {
-                $photoDir = '/var/www/html/public/uploads/cars/';
-                if (!is_dir($photoDir) && !mkdir($photoDir, 0777, true)) {
-                    die('Chyba: nemožno vytvoriť adresár ' . $photoDir);
-                }
-                chmod($photoDir, 0777);
-                chown($photoDir, 'www-data');
-
+                $photoDir = 'uploads/cars/';
+                if (!is_dir($photoDir)) mkdir($photoDir, 0777, true);
                 $filename = basename($_FILES['photo']['name']);
-                $photoPath = 'uploads/cars/' . $filename;
-                $targetFile = $photoDir . $filename;
-
-                if (!move_uploaded_file($_FILES['photo']['tmp_name'], $targetFile)) {
-                    die('Chyba: súbor sa nepodarilo presunúť do ' . $targetFile);
-                }
-                chmod($targetFile, 0644);
+                $photoPath = $photoDir . $filename;
+                move_uploaded_file($_FILES['photo']['tmp_name'], $photoPath);
             }
 
             Car::update($id, [
-                'brand' => $brand,
-                'model' => $model,
-                'year' => $year,
-                'fuel_type' => $fuelType,
-                'license_plate' => $licensePlate,
-                'photo_path' => $photoPath
+                'brand' => htmlspecialchars($brand),
+                'model' => htmlspecialchars($model),
+                'year' => (int)$year,
+                'fuel_type' => htmlspecialchars($fuelType),
+                'license_plate' => htmlspecialchars($licensePlate),
+                'photo_path' => htmlspecialchars($photoPath)
             ]);
 
             $_SESSION['success'] = "Auto bolo úspešne upravené!";
@@ -172,11 +176,16 @@ class CarController
 
     public function delete()
     {
-        $id = $_GET['id'] ?? null;
+        if (!$this->isAdmin()) {
+            header('Location: ?url=forbidden');
+            exit;
+        }
+
+        $id = (int)($_GET['id'] ?? 0);
         if ($id) {
             Car::delete($id);
+            $_SESSION['success'] = "Auto bolo úspešne vymazané!";
         }
-        $_SESSION['success'] = "Auto bolo úspešne vymazané!";
         header('Location: ?url=car/index');
     }
 }

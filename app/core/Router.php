@@ -13,7 +13,11 @@ class Router
         $actionName = $parts[1] ?? 'index';
 
         $controllerClass = 'App\\Controllers\\' . $controllerName;
-
+        if ($url === 'forbidden') {
+            $controllerObj = new \App\Controllers\HomeController();
+            $controllerObj->forbidden();
+            return;
+        }
         if (class_exists($controllerClass)) {
             $controllerObj = new $controllerClass();
 

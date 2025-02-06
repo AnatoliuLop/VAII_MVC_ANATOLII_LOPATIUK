@@ -5,10 +5,17 @@ use App\Models\User;
 
 class UserController
 {
+    private function startSession()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
     // Показать форму логина
     public function login()
     {
-        // В шаблоне form action="?url=user/loginProcess"
+        $this->startSession();
         require __DIR__ . '/../Views/pages/login.view.php';
     }
 
@@ -19,91 +26,90 @@ class UserController
             session_start();
         }
 
-
-        // Получаем логин/пароль из POST
-        $username = $_POST['username'] ?? '';
+        $username = trim($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
 
-        // Модель User::findByUsername
+        if (empty($username) || empty($password)) {
+            header('Location: ?url=user/login&error=empty_fields');
+            exit;
+        }
+
         $user = User::findByUsername($username);
 
         if ($user && password_verify($password, $user['password'])) {
-            // Авторизация успешна
-            $_SESSION['user_id']   = $user['id'];
-            $_SESSION['role']      = $user['role'];
-            $_SESSION['username']  = $user['username']; // ← NEW
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['role'] = $user['role'];
+            $_SESSION['username'] = $user['username'];
+
             header('Location: ?url=home/index');
         } else {
-            // Ошибка логина
-            header('Location: ?url=user/login&error=1');
+            header('Location: ?url=user/login&error=invalid_credentials');
         }
         exit;
     }
-    // Форма регистрации (НОВЫЙ метод)
+
+
+    // Форма регистрации
     public function register()
     {
-        // Можно хранить любые session-статусы
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-
-        // Подключаем шаблон с формой "register.view.php"
+        $this->startSession();
         require __DIR__ . '/../Views/pages/register.view.php';
     }
 
-    // Обработка регистрации (НОВЫЙ метод)
+    // Обработка регистрации
     public function registerProcess()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        $this->startSession();
 
-
-        // Получаем логин/пароль из POST
-        $username = $_POST['username'] ?? '';
+        $username = trim($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
 
-        // 1) Проверяем, не пусты ли поля
+        // Проверка на пустые поля
         if (empty($username) || empty($password)) {
             header('Location: ?url=user/register&error=empty');
             exit;
         }
 
-        // 2) Проверяем, не существует ли пользователь
-        $existingUser = User::findByUsername($username);
-        if ($existingUser) {
-            // Уже существует
+        // Проверка длины логина и пароля
+        if (strlen($username) < 4 || strlen($username) > 20) {
+            header('Location: ?url=user/register&error=username_length');
+            exit;
+        }
+        if (strlen($password) < 6) {
+            header('Location: ?url=user/register&error=password_length');
+            exit;
+        }
+
+        // Проверка на наличие существующего пользователя
+        if (User::findByUsername($username)) {
             header('Location: ?url=user/register&error=exists');
             exit;
         }
 
-        // 3) Создаём нового пользователя
-        // По умолчанию role='user', если хочешь — поменяй
+
+        // Создание нового пользователя
         $success = User::create($username, $password, 'user');
+
         if (!$success) {
-            // Не смогли создать (редко, но бывает)
             header('Location: ?url=user/register&error=db');
             exit;
         }
 
-        // 4) Можем сразу логинить его или отправить на логин
-        // Например, сразу логиним:
-        $_SESSION['user_id'] = User::findByUsername($username)['id'];
-        $_SESSION['role'] = 'user';
+        // Автоматический вход после регистрации
+        $user = User::findByUsername($username);
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['role'] = $user['role'];
+        $_SESSION['username'] = htmlspecialchars($username);
 
-        // Перенаправляем на главную (или куда хочешь)
         header('Location: ?url=home/index&success=registered');
         exit;
     }
 
-    // Логаут (уже есть)
+    // Логаут
     public function logout()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
+        $this->startSession();
+        $_SESSION = [];
         session_destroy();
         header('Location: ?url=home/index');
         exit;

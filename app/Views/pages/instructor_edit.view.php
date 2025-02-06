@@ -24,6 +24,8 @@
             <option <?= ($instructor['specialization'] == 'Skupina B,C') ? 'selected' : '' ?> value="Skupina B,C">Skupina B,C</option>
             <option <?= ($instructor['specialization'] == 'Skupina A,B,C') ? 'selected' : '' ?> value="Skupina A,B,C">Skupina A,B,C</option>
         </select>
+        <label for="experience_years">Stáž (roky):</label>
+        <input type="number" id="experience_years" name="experience_years" value="<?= htmlspecialchars($instructor['experience_years'] ?? '') ?>" min="0" required>
 
         <label for="photo">Nová fotka (ak chcete zmeniť):</label>
         <input type="file" id="photo" name="photo" accept="image/*">

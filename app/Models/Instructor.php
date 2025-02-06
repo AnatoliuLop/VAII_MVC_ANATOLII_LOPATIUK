@@ -25,15 +25,16 @@ class Instructor
     public static function create(array $data): bool
     {
         $pdo = Database::getInstance();
-        $sql = "INSERT INTO instructors (name, email, phone, specialization, photo_path)
-                VALUES (:name, :email, :phone, :specialization, :photo_path)";
+        $sql = "INSERT INTO instructors (name, email, phone, specialization, photo_path,experience_years)
+                VALUES (:name, :email, :phone, :specialization, :photo_path, :experience_years)";
         $stmt = $pdo->prepare($sql);
         return $stmt->execute([
             'name'          => $data['name'],
             'email'         => $data['email'],
             'phone'         => $data['phone'],
             'specialization'=> $data['specialization'],
-            'photo_path'    => $data['photo_path']
+            'photo_path'    => $data['photo_path'],
+            'experience_years' =>$data['experience_years'] ?? 0
         ]);
     }
 
@@ -41,17 +42,18 @@ class Instructor
     {
         $pdo = Database::getInstance();
         $sql = "UPDATE instructors
-                SET name = :name, email = :email, phone = :phone,
-                    specialization = :specialization, photo_path = :photo_path
-                WHERE id = :id";
+            SET name = :name, email = :email, phone = :phone,
+                specialization = :specialization, photo_path = :photo_path, experience_years = :experience_years
+            WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         return $stmt->execute([
-            'id'            => $id,
-            'name'          => $data['name'],
-            'email'         => $data['email'],
-            'phone'         => $data['phone'],
-            'specialization'=> $data['specialization'],
-            'photo_path'    => $data['photo_path']
+            'id'               => $id,
+            'name'             => $data['name'],
+            'email'            => $data['email'],
+            'phone'            => $data['phone'],
+            'specialization'   => $data['specialization'],
+            'photo_path'       => $data['photo_path'],
+            'experience_years' => $data['experience_years'] ?? 0
         ]);
     }
 
